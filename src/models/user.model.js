@@ -27,7 +27,12 @@ const userSchema = new mongoose.Schema(
     year: {
       type: Number,
     },
+    refreshToken: {
+      type: String,
+      default: null,
+    },
   },
+
   {
     timestamps: true,
   },

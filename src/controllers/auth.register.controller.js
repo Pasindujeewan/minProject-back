@@ -45,6 +45,10 @@ export const register = asyncHandler(async (req, res) => {
   const accessToken = generateAccessToken(user._id);
   const refreshToken = generateRefreshToken(user._id);
 
+  // Save refresh token to user
+  user.refreshToken = refreshToken;
+  await user.save({ validateBeforeSave: false });
+
   return res.status(201).json(
     new ApiResponse("User registered successfully", {
       user: {
