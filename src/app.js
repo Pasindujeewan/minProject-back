@@ -5,6 +5,7 @@ import cors from "cors";
 import errorHandler from "./middleware/error.middleware.js";
 import notFound from "./middleware/notFound.js";
 import authRoutes from "./routes/auth.routes.js";
+import uploadRoutes from "./routes/upload.routes.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
   res.send("Hello from Express + ES Modules!");
 });
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/upload", uploadRoutes);
 // 404 Handler
 app.use(notFound);
 
