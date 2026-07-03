@@ -1,13 +1,11 @@
 import express from "express";
-import dotenv from "dotenv";
+import "dotenv/config";
 import connectDB from "./config/db.js";
 import cors from "cors";
 import errorHandler from "./middleware/error.middleware.js";
 import notFound from "./middleware/notFound.js";
 import authRoutes from "./routes/auth.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
-
-dotenv.config();
 
 const app = express();
 const PORT = 3000;
