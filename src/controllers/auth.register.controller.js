@@ -50,7 +50,7 @@ export const register = asyncHandler(async (req, res) => {
   await user.save({ validateBeforeSave: false });
 
   return res.status(201).json(
-    new ApiResponse("User registered successfully", {
+    new ApiResponse("USER_REGISTER_SUCCESS", "User registered successfully", {
       user: {
         id: user._id,
         name: user.name,
