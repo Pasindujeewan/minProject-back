@@ -6,6 +6,7 @@ import errorHandler from "./middleware/error.middleware.js";
 import notFound from "./middleware/notFound.js";
 import authRoutes from "./routes/auth.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
+import assignmentRoutes from "./routes/assignment.routes.js";
 
 const app = express();
 const PORT = 3000;
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/upload", uploadRoutes);
+app.use("/api/v1/assignment", assignmentRoutes);
 // 404 Handler
 app.use(notFound);
 

@@ -7,6 +7,7 @@ import Assignment from "../models/assignment.model.js";
 import { uploadToCloudinary } from "../services/cloud.service.js";
 import { verifyAccessToken } from "../utils/verifyToken.js";
 import { analyzePdfFallback } from "../services/pdfFallback.service.js";
+import { calculatePriority } from "../utils/calculatePriority.js";
 
 export const analyzeController = asyncHandler(async (req, res) => {
   // Check if a file was uploaded
@@ -38,6 +39,31 @@ export const analyzeController = asyncHandler(async (req, res) => {
   }
   console.log("Analysis result:", analysis);
 
+  const dueDate = isNaN(new Date(analysis.deadline).getTime())
+    ? null
+    : new Date(analysis.deadline);
+  console.log("Due date:", dueDate);
+
+  let count = 0;
+  let priorityResult = 0;
+  const daysLeft = Math.max(
+    Math.ceil((dueDate - Date.now()) / (1000 * 60 * 60 * 24)),
+    1,
+  );
+  console.log("Days left:", daysLeft);
+  if (dueDate) {
+    count = await Assignment.countDocuments({
+      deadline: { $lt: dueDate },
+    });
+    priorityResult = calculatePriority(
+      analysis.difficultyScore,
+      count,
+      daysLeft,
+    );
+  }
+  console.log("Pending assignments count:", count);
+  console.log("Calculated priority:", priorityResult);
+
   // Upload the file to Cloudinary and save the analysis result to the database
   const uploadResult = await uploadToCloudinary(req.file.path, "assignments");
 
@@ -48,8 +74,8 @@ export const analyzeController = asyncHandler(async (req, res) => {
     module: module || analysis.module,
     difficulty: analysis.difficultyScore,
     estimatedTime: analysis.estimatedTime,
-    deadline: analysis.deadline,
-    priority: "normal",
+    deadline: dueDate,
+    priority: priorityResult,
     pdfUrl: uploadResult.secure_url,
     publicId: uploadResult.public_id,
     owner: userId,

@@ -28,7 +28,7 @@ Do not include markdown, code fences, explanations, or additional text.
 
 Evaluation Guidelines:
 - Identify the assignment title.
-- Write a concise summary in 2–3 sentences (under 500 characters).
+- Write a concise summary in 2–3 sentences(100 character limit).
 - Estimate the overall difficulty on a scale from 0 to 10:
   - 0 = Extremely easy
   - 5 = Moderate difficulty
@@ -40,13 +40,13 @@ Evaluation Guidelines:
 - Identify the module/course name the assignment belongs to.
 
 Return exactly this JSON structure:
-
+follow under format mandotory
 {
   "title": "string",
   "summary": "string",
   "difficultyScore": 0,
   "estimatedTime": 0,
-  "deadline": "string",
+  "deadline": "string", // ex-"2023-12-31"
   "module": "string"
 }
 }

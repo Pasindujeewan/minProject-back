@@ -14,6 +14,11 @@ const assignmentSchema = new mongoose.Schema(
       trim: true,
       maxlength: 500,
     },
+    completeStatus: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
 
     difficulty: {
       type: Number,
@@ -21,15 +26,19 @@ const assignmentSchema = new mongoose.Schema(
       min: 0,
       max: 10,
     },
-
+    priority: {
+      type: Number,
+      required: true,
+    },
     estimatedTime: {
       type: Number, // in minutes
       required: true,
       min: 1,
     },
     deadline: {
-      type: String,
+      type: Date,
       required: true,
+      default: null,
     },
     module: {
       type: String,
