@@ -29,6 +29,8 @@ const assignmentSchema = new mongoose.Schema(
     priority: {
       type: Number,
       required: true,
+      min: 0,
+      max: 10,
     },
     estimatedTime: {
       type: Number, // in minutes

@@ -1,12 +1,8 @@
 import fs from "fs";
-import path from "path";
 import ai from "../config/gemini.js";
 
 export const analyzeAssignment = async (filePath) => {
-  // Read PDF
   const pdfBuffer = fs.readFileSync(filePath);
-
-  // Convert to Base64
   const base64Pdf = pdfBuffer.toString("base64");
 
   const response = await ai.models.generateContent({
@@ -26,29 +22,26 @@ export const analyzeAssignment = async (filePath) => {
 Analyze the uploaded assignment document and return ONLY valid JSON.
 Do not include markdown, code fences, explanations, or additional text.
 
-Evaluation Guidelines:
+Evaluation guidelines:
 - Identify the assignment title.
-- Write a concise summary in 2–3 sentences(100 character limit).
-- Estimate the overall difficulty on a scale from 0 to 10:
-  - 0 = Extremely easy
-  - 5 = Moderate difficulty
-  - 10 = Extremely difficult
-- Estimate the time required for an average university student to complete the assignment.
-  - Express the value only in minutes
-  - Consider reading, research, implementation, testing, documentation, and report writing.
-- Extract or infer the assignment deadline.(ex="2023-12-31" or "Not found")
-- Identify the module/course name the assignment belongs to.
+- Write a concise summary using no more than 2 sentences.
+- The summary MUST be 400 characters or fewer, including spaces.
+- Do not repeat instructions, grading criteria, or long lists in the summary.
+- Estimate overall difficulty from 0 to 10, where 0 is extremely easy,
+  5 is moderate, and 10 is extremely difficult.
+- Estimate completion time for an average university student in minutes only.
+  Include reading, research, implementation, testing, documentation, and writing.
+- Extract or infer the deadline as YYYY-MM-DD. Use "Not found" if unavailable.
+- Identify the module or course name. Use "Not found" if unavailable.
 
 Return exactly this JSON structure:
-follow under format mandotory
 {
   "title": "string",
-  "summary": "string",
+  "summary": "string (maximum 400 characters)",
   "difficultyScore": 0,
   "estimatedTime": 0,
-  "deadline": "string", // ex-"2023-12-31"
+  "deadline": "YYYY-MM-DD or Not found",
   "module": "string"
-}
 }
             `,
           },
@@ -56,13 +49,11 @@ follow under format mandotory
       },
     ],
   });
-  const text = response.text;
 
-  const cleanJson = text
+  const cleanJson = response.text
     .replace(/```json/g, "")
     .replace(/```/g, "")
     .trim();
 
-  const analysis = JSON.parse(cleanJson);
-  return analysis;
+  return JSON.parse(cleanJson);
 };

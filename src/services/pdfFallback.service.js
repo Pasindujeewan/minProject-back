@@ -32,7 +32,13 @@ export const analyzePdfFallback = async (filePath) => {
 
   const wordCount = text.split(/\s+/).filter(Boolean).length;
 
-  const shortSummary = text.split(/\s+/).slice(0, 50).join(" ");
+  const summaryWords = text.split(/\s+/).slice(0, 50);
+  let shortSummary = "";
+  for (const word of summaryWords) {
+    const candidate = shortSummary ? `${shortSummary} ${word}` : word;
+    if (candidate.length > 400) break;
+    shortSummary = candidate;
+  }
 
   const estimatedTime = Math.max(1, Math.ceil(wordCount / 200));
 

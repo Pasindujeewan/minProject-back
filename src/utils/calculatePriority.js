@@ -1,17 +1,47 @@
-export function calculatePriority(difficulty, pendingAssignments, daysLeft) {
-  // Convert workload to a 0-10 scale
-  console.log(
-    "Calculating priority with difficulty:",
-    difficulty,
-    "pendingAssignments:",
-    pendingAssignments,
-    "daysLeft:",
-    daysLeft,
+const clamp = (value, minimum, maximum) =>
+  Math.min(Math.max(value, minimum), maximum);
+
+function calculateUrgency(daysLeft) {
+  if (daysLeft <= 1) return 10;
+  if (daysLeft <= 3) return 9;
+  if (daysLeft <= 7) return 7.5;
+  if (daysLeft <= 14) return 5.5;
+  if (daysLeft <= 30) return 3;
+  return 1;
+}
+
+/**
+ * Return a priority score from 0 to 10.
+ * Urgency is the strongest factor, followed by difficulty, competing work,
+ * and the estimated effort required.
+ */
+export function calculatePriority(
+  difficulty,
+  pendingAssignments,
+  daysLeft,
+  estimatedMinutes = 0,
+) {
+  const difficultyScore = clamp(Number(difficulty) || 0, 0, 10);
+  const competingAssignments = Math.max(
+    0,
+    Number.isFinite(Number(pendingAssignments))
+      ? Number(pendingAssignments)
+      : 0,
   );
-  const workload = Math.min(pendingAssignments, 10);
+  const normalizedDays = Number.isFinite(Number(daysLeft))
+    ? Number(daysLeft)
+    : 365;
+
+  // Each assignment due sooner adds two workload points, capped at 10.
+  const workloadScore = clamp(competingAssignments * 2, 0, 10);
+  const urgencyScore = calculateUrgency(normalizedDays);
+  const effortScore = clamp((Number(estimatedMinutes) / 60) * 1.5 || 0, 0, 10);
 
   const priority =
-    (0.6 * difficulty + 0.4 * workload) / Math.pow(daysLeft + 1, 1.5);
+    urgencyScore * 0.45 +
+    difficultyScore * 0.25 +
+    workloadScore * 0.15 +
+    effortScore * 0.15;
 
-  return Number(priority.toFixed(2));
+  return Number(clamp(priority, 0, 10).toFixed(1));
 }
