@@ -58,7 +58,7 @@ export const finalizePendingAssignment = asyncHandler(async (req, res) => {
   await pendingAssignment.deleteOne();
 
   return res.status(201).json(
-    new ApiResponse(201, "Assignment completed and saved successfully", {
+    new ApiResponse(201, "Assignment completed and saved successfully.", {
       assignment,
       pdfUrl: assignment.pdfUrl,
     }),
