@@ -7,11 +7,13 @@ import notFound from "./middleware/notFound.js";
 import authRoutes from "./routes/auth.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 import assignmentRoutes from "./routes/assignment.routes.js";
+import morgan from "morgan";
 
 const app = express();
 const PORT = 3000;
 
 // db connection
+app.use(morgan("dev"));
 await connectDB();
 
 // Allow requests from your frontend
@@ -32,6 +34,6 @@ app.use(notFound);
 //globel error handeler
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running at http://0.0.0.0:${PORT}`);
 });
