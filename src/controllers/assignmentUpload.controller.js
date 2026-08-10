@@ -35,7 +35,7 @@ export const analyzeAssignmentPdf = asyncHandler(async (req, res) => {
       owner: userId,
       missingFields: invalidFields,
     });
-
+    console.log("pending assignment created with id:", pendingAssignment._id);
     return res.status(200).json({
       success: true,
       statusCode: 200,

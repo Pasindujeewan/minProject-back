@@ -3,3 +3,5 @@ node_modules/
 dist/
 coverage/
 *.log
+remindly-c967f-firebase-adminsdk-fbsvc-a580caee7b.json
+*-firebase-adminsdk-*.json

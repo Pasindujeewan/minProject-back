@@ -9,6 +9,8 @@ import {
   mergePendingAssignmentWithReview,
 } from "../utils/assignmentFields.js";
 import { verifyAccessToken } from "../utils/verifyToken.js";
+import { sendNotification } from "../services/notification.service.js";
+import User from "../models/user.model.js";
 
 export const finalizePendingAssignment = asyncHandler(async (req, res) => {
   const { userId } = await verifyAccessToken(
@@ -43,6 +45,13 @@ export const finalizePendingAssignment = asyncHandler(async (req, res) => {
       data: { missingFields: invalidFields, pendingId: pendingAssignment._id },
     });
   }
+  //test notifcation
+  const user = await User.findById(userId);
+  await sendNotification(
+    user.expoPushToken,
+    "New Assignment",
+    "You have a new assignment!",
+  );
 
   const priority = await calculateAssignmentPriority({
     ...assignmentData,

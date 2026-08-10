@@ -34,8 +34,6 @@ app.use(notFound);
 //globel error handeler
 app.use(errorHandler);
 
-if (process.env.VERCEL !== "1") {
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running at http://0.0.0.0:${PORT}`);
+});

@@ -20,7 +20,7 @@ export const register = asyncHandler(async (req, res) => {
 
     throw new ApiError(400, "Validation failed", "VALIDATION_ERROR", errors);
   }
-  const { name, email, password } = result.data;
+  const { name, email, password, expoPushToken } = result.data;
 
   // Check if email already exists
   const existingUser = await User.findOne({
@@ -39,6 +39,7 @@ export const register = asyncHandler(async (req, res) => {
     name: name.trim(),
     email: email,
     password: hashedPassword,
+    expoPushToken: expoPushToken || null,
   });
 
   // Generate tokens
