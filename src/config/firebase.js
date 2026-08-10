@@ -1,16 +1,12 @@
 import { initializeApp, cert } from "firebase-admin/app";
 import { getMessaging } from "firebase-admin/messaging";
-import fs from "fs";
-
-const serviceAccount = JSON.parse(
-  fs.readFileSync(
-    "./remindly-c967f-firebase-adminsdk-fbsvc-a580caee7b.json",
-    "utf8",
-  ),
-);
 
 const firebaseApp = initializeApp({
-  credential: cert(serviceAccount),
+  credential: cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+  }),
 });
 
 export const messaging = getMessaging(firebaseApp);
