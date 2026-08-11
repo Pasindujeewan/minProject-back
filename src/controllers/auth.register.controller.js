@@ -11,6 +11,7 @@ import { registerSchema } from "../validation/auth.validation.js";
 
 export const register = asyncHandler(async (req, res) => {
   const { expoPushToken } = req.body;
+  console.log("token is coming :", expoPushToken);
   // Data validation
   const result = registerSchema.safeParse(req.body);
   if (!result.success) {
