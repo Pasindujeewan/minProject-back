@@ -10,7 +10,6 @@ import {
 import { registerSchema } from "../validation/auth.validation.js";
 
 export const register = asyncHandler(async (req, res) => {
-  console.log("Registering user with data:", req.body);
   const { expoPushToken } = req.body;
   // Data validation
   const result = registerSchema.safeParse(req.body);

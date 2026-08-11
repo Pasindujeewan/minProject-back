@@ -12,6 +12,7 @@ export const deletePendingAssignment = asyncHandler(async (req, res) => {
 
   const assignment = await PendingAssignment.findOneAndDelete({
     _id: assignmentId,
+    owner: userId,
   });
   if (!assignment) {
     throw new ApiError(404, "Assignment not found", "NOT_FOUND");

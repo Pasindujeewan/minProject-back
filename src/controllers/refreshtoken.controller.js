@@ -19,11 +19,9 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
       "REFRESH_TOKEN_REQUIRED",
     );
   }
-  console.log("Refresh Token:", refreshToken);
 
   let decoded = verifyRefreshToken(refreshToken);
 
-  console.log("Decoded Refresh Token:", decoded);
   const user = await User.findById(decoded.userId);
 
   if (!user) {
