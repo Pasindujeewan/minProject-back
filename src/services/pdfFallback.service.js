@@ -49,8 +49,6 @@ export const analyzePdfFallback = async (filePath) => {
   if (wordCount > 2000) difficulty = 8;
   if (wordCount > 3000) difficulty = 10;
 
-  // 👉 NEW FIELD EXTRACTION (simple regex-based approach)
-
   const deadlineMatch = text.match(/deadline[:\-]?\s*(.+)/i);
 
   const moduleMatch = text.match(/(module|course|subject)[:\-]?\s*(.+)/i);

@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 import assignmentRoutes from "./routes/assignment.routes.js";
 import morgan from "morgan";
+import { startPriorityScheduler } from "./utils/corn.js";
 
 const app = express();
 const PORT = 3000;
@@ -36,4 +37,6 @@ app.use(errorHandler);
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running at http://0.0.0.0:${PORT}`);
+  // Start the priority scheduler
+  startPriorityScheduler();
 });

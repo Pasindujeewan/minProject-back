@@ -47,11 +47,11 @@ export const finalizePendingAssignment = asyncHandler(async (req, res) => {
   }
   //test notifcation
   const user = await User.findById(userId);
-  await sendNotification(
-    user.expoPushToken,
-    "New Assignment",
-    "You have a new assignment!",
-  );
+  await sendNotification({
+    token: user.expoPushToken,
+    title: "New Assignment",
+    body: "You have a new assignment!",
+  });
 
   const priority = await calculateAssignmentPriority({
     ...assignmentData,

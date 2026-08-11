@@ -61,6 +61,10 @@ const assignmentSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    highPriorityNotificationSent: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
