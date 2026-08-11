@@ -25,6 +25,10 @@ export const checkAssignmentPriorities = asyncHandler(async () => {
         token: userToken.expoPushToken,
         title: "High Priority Assignment",
         body: `Your assignment "${assignment.title}" is high priority!`,
+        data: {
+          type: "assignment",
+          assignmentId: assignment._id.toString(),
+        },
       });
       await Assignment.updateOne(
         { _id: assignment._id },

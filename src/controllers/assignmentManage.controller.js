@@ -46,3 +46,24 @@ export const deleteAssignment = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "Assignment deleted successfully", assignment));
 });
+
+export const getSingleAssignment = asyncHandler(async (req, res) => {
+  const { assignmentId } = req.params;
+  const { userId } = await verifyAccessToken(
+    req.headers.authorization?.replace("Bearer ", ""),
+  );
+  const assignment = await Assignment.findOne({
+    _id: assignmentId,
+    owner: userId,
+  });
+
+  if (!assignment) {
+    throw new ApiError(404, "Assignment not found", "NOT_FOUND");
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, "Assignment retrieved successfully", assignment),
+    );
+});

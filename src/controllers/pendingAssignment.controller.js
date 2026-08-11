@@ -52,6 +52,10 @@ export const finalizePendingAssignment = asyncHandler(async (req, res) => {
       token: user.expoPushToken,
       title: "New Assignment",
       body: "You have a new assignment!",
+      data: {
+        type: "assignment",
+        assignmentId: pendingAssignment._id.toString(),
+      },
     });
   }
 
