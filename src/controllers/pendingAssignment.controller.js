@@ -45,19 +45,6 @@ export const finalizePendingAssignment = asyncHandler(async (req, res) => {
       data: { missingFields: invalidFields, pendingId: pendingAssignment._id },
     });
   }
-  //test notifcation
-  const user = await User.findById(userId);
-  if (user.expoPushToken) {
-    await sendNotification({
-      token: user.expoPushToken,
-      title: "New Assignment",
-      body: "You have a new assignment!",
-      data: {
-        type: "assignment",
-        assignmentId: pendingAssignment._id.toString(),
-      },
-    });
-  }
 
   const priority = await calculateAssignmentPriority({
     ...assignmentData,
@@ -71,6 +58,20 @@ export const finalizePendingAssignment = asyncHandler(async (req, res) => {
     owner: userId,
   });
   await pendingAssignment.deleteOne();
+
+  //test notifcation
+  const user = await User.findById(userId);
+  if (user.expoPushToken) {
+    await sendNotification({
+      token: user.expoPushToken,
+      title: "New Assignment",
+      body: "You have a new assignment!",
+      data: {
+        type: "assignment",
+        assignmentId: (assignment._id || assignment.id).toString(),
+      },
+    });
+  }
 
   return res.status(201).json(
     new ApiResponse(201, "Assignment completed and saved successfully.", {
