@@ -11,6 +11,7 @@ import { registerSchema } from "../validation/auth.validation.js";
 
 export const register = asyncHandler(async (req, res) => {
   console.log("Registering user with data:", req.body);
+  const { expoPushToken } = req.body;
   // Data validation
   const result = registerSchema.safeParse(req.body);
   if (!result.success) {
@@ -21,7 +22,7 @@ export const register = asyncHandler(async (req, res) => {
 
     throw new ApiError(400, "Validation failed", "VALIDATION_ERROR", errors);
   }
-  const { name, email, password, expoPushToken } = result.data;
+  const { name, email, password } = result.data;
 
   // Check if email already exists
   const existingUser = await User.findOne({
